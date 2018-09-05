@@ -1,0 +1,59 @@
+{% load cms_tags staticfiles menu_tags sekizai_tags %}
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Integrantes del grupo{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link href="{% static "myweb.css" %}" rel="stylesheet">       
+            <ul class="nav">
+                {% show_menu 0 100 100 100 %}
+            </ul>
+
+        {% render_block "css" %}
+    </head>
+    <body>
+        <!--{% cms_toolbar %}-->
+        <div class="container">
+            {% block content %}{% endblock content %}
+        </div>
+
+        <h1>Integrantes del grupo</h1> 
+        <p id="intro">En esta sección se presentan todas aquellas personas que forman parte del equipo de investigación "ELiRF: Grup d'Enginyeria  del Llenguatje Natural i Reconeiximent de formes" de la Universidad Politécnica de Valencia. Existen enlaces para cada integrante con acceso a páginas personales con información relevante.</p> 
+
+        <p><h2>Líder del grupo</h2></p>
+            <ul><table>
+                {% for login, name in lider%}
+                        <li><td>&#8226 <a href="http://localhost:8000/es/people/{{ login }}/">{{name}}</a></td></li>
+                {% endfor %}
+            </table></ul>
+        <p><h2>Integrantes del grupo</h2></p>
+        <ul>
+            <table>
+	            {% for login,name in integrantes %}
+                    <tr>
+                        <td>&#8226 <a href="http://localhost:8000/es/people/{{ login }}/"> {{name}}</a></td>  
+                    </tr>
+                {% endfor %}
+            </table>
+	    </ul>
+        <p><h2>Colaboradores y becarios del grupo</h2></p>
+        <ul>
+            <table>
+	            {% for login,name in colaboradores %}
+                    <tr>
+                        <td>&#8226 <a href="http://localhost:8000/es/people/{{ login }}/"> {{name}}</a></td>  
+                    </tr>
+                {% endfor %}
+            </table>
+	    </ul>    
+	    <footer class="footer">
+		    <div class="container>
+	            <p class="text-muted">{% block footer %}Web del grupo de investigación de la UPV{% endblock footer %}</p>
+                <a href="https://www.upv.es/"><img src="{% static "rsz_upv_logoblanco.png" %}" /></a>
+            </div>
+        </footer>
+        
+        {% render_block "js" %}
+    </body>
+</html>

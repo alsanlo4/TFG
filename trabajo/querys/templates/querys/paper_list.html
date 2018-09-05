@@ -1,0 +1,273 @@
+{% load cms_tags staticfiles menu_tags sekizai_tags widget_tweaks %}
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Producción{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href="{% static "produccion.css" %}" rel="stylesheet">
+        <script src="{% static "prueba.js" %}"></script>   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+        <ul class="nav">
+            {% show_menu 0 100 100 100 %}
+        </ul>
+        {% render_block "css" %}
+    </head>
+    <body>
+        <!--{% cms_toolbar %}-->        
+        <div class="container">
+
+            {% block content %}
+            <form id="filtros" method="get">
+                <div class="well">
+                    <h2 id="title">Producción</h2>
+                    <hr id="separador">
+                    <div class="row">
+                        <div class="form-group col-sm-4 col-md-3">
+                            <ul class="cabeza">Título contiene:</ul>
+                            <ul>{% render_field filter.form.title class="form-control" style="width:71.5%;" %}</ul>
+                            <ul class="cabeza">Número de paper:</ul>
+                            <ul>{% render_field filter.form.num class="form-control" style="width:10%;" %}</ul>
+                            <ul class="cabeza">Año:</ul>
+                            <ul>{% render_field filter.form.year class="form-control" style="width:10%;" %}</ul>
+                            <ul>
+                            <li class="buscar" style="margin-top:1.5%;"><div>Índice de calidad:</div>
+                            <div>{% render_field filter2.form.id class="form-control"%}</div></li>
+                            <li class="buscar" id="calNum" style="margin-top:1.5%;"><div> Calidad numérica:</div>
+                            <div>{% render_field filter2.form.value class="form-control" %}</div></li>
+                            </ul>
+                            <br><br><br><br>
+                            <ul class="cabeza">Participa:</ul>
+                            <ul>{% render_field filter3.form.login class="form-control" %}</ul>
+                        </div>
+                    </div>
+                <hr id="separador">
+                <button type="submit" class="btn btn-primary" style="margin-left:85%; margin-bottom:2%; cursor:pointer; ">
+                    <span class="glyphicon gylphicon-search"></span>Search
+                </button>
+                </div>
+            </form>
+            <div id="selector" class="form-group col-sm-4 col-md-3">
+                            <ul class="cabeza">Mostrar:</ul>
+                                <ul><select class="botonesEsp" id="opcion" onchange="mostrar()">
+                                  <option value="1" style="cursor:pointer;">All</option>
+                                  <option value="2" style="cursor:pointer;">Journals</option>
+                                  <option value="3" style="cursor:pointer;">Conferences</option>
+                                </select>
+                            </ul>
+                        </div>
+            <button class="botonEsp" id="modal">Links</button>
+            <br><br>         
+            <button class="botonEsp" id="btnExport">Exportar</button>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2 class="modal-title">Links of filtered papers</h2>
+                    </div>
+                    <div class="modal-body">
+                        <table id="links" class="table table-bordered">
+                            <thead>
+                                <tr> 
+			                        <th class="linkHeader">Número Paper</th>
+			                        <th class="linkHeader">Título</th>
+			                        <th class="linkHeader">Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for link in media %}
+                                <tr>
+                                    <td>{{ link.paper.num }}</td>
+                                    <td style="text-align:left;">{{ link.paper.title }}</td>
+                                    <td class="lastColumn"><a href="{{ link.link }}">{{ link.link }}</a></td>
+                                </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6">No links for this papers</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeModal">Close</button>
+                    </div>
+                </div>
+            </div> 
+
+            <table id="All" class="table table-bordered">
+                <thead>
+                    <tr> 
+			            <th class="header">Número</th>
+			            <th class="header">Título</th>
+			            <th class="header">Año</th>
+			            <th class="header">DOI</th>
+			            <th class="header">Páginas</th>
+			            <th class="header">Número de Autores</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Paper in qs %}
+                    <tr>
+                        <td>{{ Paper.num }}</td>
+                        <td style="text-align:left;">{{ Paper.title }}</td>
+                        <td>{{ Paper.year }}</td>
+                        <td>{{ Paper.doi }}</td>
+                        <td>{{ Paper.pages }}</td>
+                        <td class="lastColumn">{{ Paper.nauthors }}</td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">No results were found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table id="Journal" class="table table-bordered" style="display:none">
+                <thead>
+                    <tr> 
+			            <th class="header">Número</th>
+			            <th  style="text-align:left;" class="header">Título</th>
+			            <th class="header">Año</th>
+			            <th class="header">DOI</th>
+			            <th class="header">Páginas</th>
+			            <th class="header">Número de Autores</th>
+			            <th style="text-align:left;"  class="header">Journal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for j in journal %}
+                    <tr>
+                        <td>{{ j.num.num }}</td>
+                        <td>{{ j.num.title }}</td>
+                        <td>{{ j.num.year }}</td>
+                        <td>{{ j.num.doi }}</td>
+                        <td>{{ j.num.pages }}</td>
+                        <td>{{ j.num.nauthors }}</td>
+                        <td class="lastColumn">{{ j.journal.name }}</td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">No results were found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table id="Conference" class="table table-bordered" style="display:none">
+                <thead>
+                    <tr> 
+			            <th class="header">Número</th>
+			            <th  style="text-align:left;" class="header">Título</th>
+			            <th class="header">Año</th>
+			            <th class="header">DOI</th>
+			            <th class="header">Páginas</th>
+			            <th class="header">Número de Autores</th>
+			            <th  style="text-align:left;" class="header">Conferencia</th>
+			            <th class="header">Editor</th>
+			            <th class="header">Lugar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in conference %}
+                    <tr>
+                        <td>{{ c.paper.num }}</td>
+                        <td>{{ c.paper.title }}</td>
+                        <td>{{ c.paper.year }}</td>
+                        <td>{{ c.paper.doi }}</td>
+                        <td>{{ c.paper.pages }}</td>
+                        <td>{{ c.paper.nauthors }}</td>
+                        <td>{{ c.conference.name }}</td>
+                        <td>{{ c.editor }}</td>
+                        <td class="lastColumn">{{ c.place }}</td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="9">No results were found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           <script>
+                var modal = document.getElementById('myModal');
+                var btn = document.getElementById("modal");
+                var span = document.getElementsByClassName("close")[0];
+                var btnClose=document.getElementById("closeModal");
+
+                // When the user clicks the button, open the modal 
+                btn.onclick = function() {
+                    modal.style.display = "block";
+                }
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks on close, close the modal
+                btnClose.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                function mostrar()
+                {
+                    var display = document.getElementById("opcion").value;
+
+                    if(display=="2"){
+                        document.getElementById("All").style.display='none';
+                        document.getElementById("Conference").style.display='none';
+                        document.getElementById("Journal").style.display='block';
+                    }
+                    if(display=="3"){
+                        document.getElementById("All").style.display='none';
+                        document.getElementById("Journal").style.display='none';
+                        document.getElementById("Conference").style.display='block';
+                    }
+                    if(display=="1"){
+                        document.getElementById("Journal").style.display='none';
+                        document.getElementById("Conference").style.display='none';
+                        document.getElementById("All").style.display='block';
+                    }
+                }
+            </script>
+
+            {% endblock content %}
+        </div>
+        
+	    <footer class="footer">
+		    <div class="container>
+	            <p class="text-muted">{% block footer %}Web del grupo de investigación de la UPV{% endblock footer %}</p>
+                <a href="https://www.upv.es/"><img src="{% static "rsz_upv_logoblanco.png" %}" /></a>
+            </div>
+        </footer>
+        {% render_block "js" %}
+    </body>
+    <script>
+        $("#btnExport").click(function () {
+            var valor = document.getElementById("opcion").innerHTML;
+
+            if($("option[value='2']:checked").text()=="Journals")
+            {
+                $("#Journal").table2excel({
+                    filename: "paper_j.xls"});
+            }
+            else if($("option[value='1']:checked").text()=="All")
+            {
+
+                $("#All").table2excel({
+                    filename: "papers.xls"});
+            }
+            else if($("option[value='3']:checked").text()=="Conferences")
+            {
+                $("#Conference").table2excel({
+                    filename: "paper_c.xls"});
+            }
+        });       
+    </script>
+</html>

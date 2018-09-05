@@ -1,0 +1,27 @@
+{% load cms_tags staticfiles menu_tags sekizai_tags %}
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}This is my new project home page{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+
+        <link href="{% static "myweb.css" %}" rel="stylesheet">       
+        <ul class="nav">
+                {% show_menu 0 100 100 100 %}
+            </ul>
+        {% render_block "css" %}
+    </head>
+    <body>
+        {% cms_toolbar %}
+        <div class="container">
+            {% block content %}{% endblock content %}
+        </div>
+	    <footer class="footer">
+		    <div class="container>
+	            <p class="text-muted">{% block footer %}Web del grupo de investigación de la UPV{% endblock footer %}</p>
+                <a href="https://www.upv.es/"><img src="{% static "rsz_upv_logoblanco.png" %}" /></a>
+            </div>
+        </footer>	
+        {% render_block "js" %}
+    </body>
+</html>

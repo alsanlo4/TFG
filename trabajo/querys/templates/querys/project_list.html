@@ -1,0 +1,101 @@
+{% load cms_tags staticfiles menu_tags sekizai_tags widget_tweaks %}
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Proyectos{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href="{% static "projects.css" %}" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+        <script src="{% static "prueba.js" %}"></script>
+        <ul class="nav">
+            {% show_menu 0 100 100 100 %}
+        </ul>   
+        {% render_block "css" %}
+    </head>
+    <body>
+        <!--{% cms_toolbar %}-->
+        <div class="container">
+            {% block content %}
+            <form id="filtros" method="get">
+                <div class="well">
+                    <h2 id="title">Proyectos</h2>
+                    <hr id="separador">
+                    <div class="row">
+                        <div class="form-group col-sm-4 col-md-3">
+                            <ul class="cabeza">Título contiene:</ul>
+                            <ul>{% render_field filter.form.title__contains class="form-control" style="width:71.5%;" %}</ul>
+                            <ul>
+                            <li class="buscar"><div>Fecha de inicio mayor que:</div>
+                            <div>{% render_field filter.form.from_date__gt class="form-control" placeholder="Date format: YYYY-MM-DD" %}</div></li>
+                            <li class="buscar"><div>Fecha de fin menor que:</div>
+                            <div>{% render_field filter.form.to_date__lt class="form-control" placeholder="Date format: YYYY-MM-DD"%}</div></li>
+                            </ul>
+                            <br><br><br>
+                            <ul>
+                            <li class="buscar"><div>Fecha de inicio menor que:</div>
+                            <div>{% render_field filter.form.from_date__lt class="form-control" placeholder="Date format: YYYY-MM-DD"%}</div></li>
+                            <li class="buscar"><div>Fecha de fin mayor que:</div>
+                            <div>{% render_field filter.form.to_date__gt class="form-control" placeholder="Date format: YYYY-MM-DD"%}</div></li>
+                            </ul>
+                            <br><br><br>
+                            <ul class="cabeza">Tipo de proyecto contiene:</ul>
+                            <ul>{% render_field filter.form.type class="form-control"  style="width:71.5%;"  %}</ul>
+                            <ul class="cabeza">Participantes:</ul>
+                            <ul>{% render_field filter2.form.login class="form-control" %}</ul>
+                        </div>
+                    </div>     
+                <hr>                
+                <button type="submit" style="margin-left:85%; margin-bottom:2%; cursor:pointer;">
+                    <span class="glyphicon gylphicon-search"></span>Search
+                </button>
+                </div>
+            </form>
+            <button id="btnExport" style="cursor:pointer;">Exportar</button>
+            <table id='tabla' class="table table-bordered">
+                <thead>
+                    <tr> 
+			            <th>Número</th>
+			            <th style="width:25%;">Título</th>
+			            <th style="width:5%">Identificador</th>
+			            <th style="width:18%">Fechas</th>
+			            <th>Tipo de proyecto</th>
+			            <th class="lastColumn">Organismo fundador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Project in filter.qs %}
+                    <tr>
+                        <td >{{ Project.num }}</td>
+                        <td class="textoNormal" style="font-size:13.5px">{{ Project.title }}</td>
+                        <td style="font-size:13.5px;">{{ Project.identificador }}</td>
+                        <td>{{ Project.from_date }}<br>----<br>{{ Project.to_date }}</td>
+                        <td class="textoNormal">{{ Project.type }}</td>
+                        <td class="lastColumn" style="text-align:left; font-size:13.5px;">{{ Project.fund }}</td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">No results were found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endblock content %}
+        </div>
+        
+	    <footer class="footer">
+		    <div class="container>
+	            <p class="text-muted">{% block footer %}Web del grupo de investigación de la UPV{% endblock footer %}</p>
+                <a href="https://www.upv.es/"><img src="{% static "rsz_upv_logoblanco.png" %}" /></a>
+            </div>
+        </footer>
+        {% render_block "js" %}
+    </body>
+    <script>
+        $("#btnExport").click(function () {
+            $("#tabla").table2excel({
+               filename: "proyectos.xls"
+            });
+        });
+    </script>
+</html>

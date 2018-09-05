@@ -1,0 +1,271 @@
+body
+{
+    margin-top: 15px;
+    margin-bottom: 80px;
+    margin-left:0;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    color: #000000;
+    background: #f6f6f6;
+}
+form
+{
+    margin-top: 10%;
+}
+.well
+{
+    margin-top:0;
+    background-color:#cccccc;
+}
+#title
+{
+    margin-left:2%;
+    margin-top:2%;
+    /*margin-bottom:5%;*/
+    text-align:center;
+}
+hr
+{
+    height: 10px;
+	border: 0;
+	box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+ul
+{
+    margin-left:17%; 
+}
+.buscar
+{
+    margin-right:7%; 
+}
+.cabeza
+{
+    margin-bottom:-1.5%;
+}
+#calNum
+{
+    margin-left:7%;
+}
+/*Menú*/
+ul.nav
+{
+    list-style-type: none;
+    margin:0;
+    padding:0;
+    overflow: hidden;
+    background-color:#333333;
+    width: 100%;
+    position:fixed;
+    top:0;
+}
+li
+{
+    display:inline;
+    float:left;
+}
+li a
+{
+    display:block;
+    color:white;
+    text-decoration:none;
+    height: 22px;
+    padding:8px 16px;
+}
+li a:hover
+{
+    background-color:#111;
+    color:white;
+}
+/*Final del menú*/
+#All
+{
+    display:inline;
+    text-align: center;
+    margin-left: 110px;
+    margin-right: auto;
+}
+
+td
+{
+    background: white;
+    border-left: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+}
+.lastColumn
+{
+    border-right: 2px solid #ccc;
+}
+.textoNormal
+{
+    text-align:left;
+}
+.header
+{
+    position: sticky;
+    top:7%;
+    background:#cccccc;
+    font-weight: bold;
+    font-size: 20px;
+    border-left: 2px solid #ccc;
+    border-top: 2px solid #ccc;
+}
+.linkHeader
+{
+    position: sticky;
+    top:-18.25%;
+    background:#cccccc;
+    font-weight: bold;
+    font-size: 20px;
+    border-left: 2px solid #ccc;
+    border-top: 2px solid #ccc;
+}
+#filtros
+{
+    background-color: #cccccc;
+    margin-bottom:20px;
+    font-weight: bold;
+    border:1px black solid;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}   
+.nav {
+    padding-left: 0;
+}
+.nav li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+}
+.container {
+    width: 940px;
+    margin: 0 auto
+}
+.content {
+    float: left;
+    width: 80%;
+}
+.sidebar {
+    float: left;
+    width: 20%;
+}
+.footer {
+    position: absolute;
+    width: 100%;
+    height: 90px;
+    background-color: #545454;
+    color: #ffffff;
+    font-weight: bold;
+    margin-top:10%;
+}
+/* Estilo del Modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+#links
+{
+    border: 2px solid black;
+    background: #ffffff;
+    text-align: center;
+    margin-left: 110px;
+    margin-right: auto;
+    margin-bottom: 60px;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 15px 16px;
+    background-color: #f5f5f5;
+    color: black;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    position:relative;
+    padding: 80px 16px;
+    background-color: #f5f5f5;
+    color: white;
+}
+#closeModal
+{
+    position:absolute;
+    top:0;
+    right:0;
+}
+/* Fin del modal*/
+#btnExport
+{
+
+    margin-left:-13.5%;
+
+    position:-webkit-sticky;
+    position:sticky;
+    top:27.75%;
+}
+#opcion
+{
+    margin-top:0.5%;
+    cursor:pointer;
+}
+#selector
+{
+    margin-left:-42%;
+    margin-top:5%;
+    position:-webkit-sticky;
+    position:sticky;
+    top:10%;
+}
+#modal
+{
+    margin-top:-20%;
+    margin-left:-13.38%;
+    position:sticky;
+    top:20.5%;
+}
+.conference
+{
+    margin-right: auto;
+    margin-left:auto;
+}
+.button
+{
+    cursor:pointer;
+}
+.botonEsp
+{
+    cursor:pointer;
+    width:12.75%;
+}
